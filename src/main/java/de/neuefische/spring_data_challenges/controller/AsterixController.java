@@ -3,7 +3,10 @@ package de.neuefische.spring_data_challenges.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/asterix")
@@ -18,19 +21,63 @@ public class AsterixController {
 
     @GetMapping("/characters")
     public List<CharacterRecord> getCharacters(
+            @RequestParam(required = false) boolean useOrLogic,
             @RequestParam(required = false) String job,
             @RequestParam(required = false) Integer age,
             @RequestParam(required = false) String name){
+
+        if(useOrLogic){
+            return getCombinedResults(job, Optional.ofNullable(age), name);
+        }
+
+        return getFullMatchResults(job, Optional.ofNullable(age), name);
+    }
+
+    private List<CharacterRecord> getFullMatchResults(String job, Optional<Integer> age, String name) {
+        List<CharacterRecord> result = repo.findAll();
+
         if (job != null) {
-            return repo.findByJob(job);
+            result = result.stream()
+                    .filter(characterRecord -> characterRecord.job().equals(job))
+                    .toList();
         }
-        if (age != null) {
-            return repo.findByAge(age);
+
+        if (age.isPresent()) {
+            result = result.stream()
+                    .filter(characterRecord -> characterRecord.age() == age.get())
+                    .toList();
         }
+
         if (name != null) {
-            return repo.findByName(name);
+            result = result.stream()
+                    .filter(characterRecord -> characterRecord.name().equals(name))
+                    .toList();
         }
-        return repo.findAll();
+        return result;
+    }
+
+    private List<CharacterRecord> getCombinedResults(String job, Optional<Integer> age, String name){
+        List<CharacterRecord> fullList = repo.findAll();
+        List<CharacterRecord> result = new ArrayList<>();
+
+        if (job != null) {
+            result.addAll(fullList.stream()
+                    .filter(characterRecord -> characterRecord.job().equals(job))
+                    .toList());
+        }
+
+        if (age.isPresent()) {
+            result.addAll(fullList.stream()
+                    .filter(characterRecord -> characterRecord.age() == age.get())
+                    .toList());
+        }
+
+        if (name != null) {
+            result.addAll(fullList.stream()
+                    .filter(characterRecord -> characterRecord.name().equals(name))
+                    .toList());
+        }
+        return result.stream().distinct().toList();
     }
 
     @GetMapping("/character/{id}")
