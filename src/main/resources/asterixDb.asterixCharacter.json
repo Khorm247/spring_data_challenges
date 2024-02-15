@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5d4"
+  },
+  "id": "1",
+  "name": "Asterix",
+  "age": 35,
+  "job": "Krieger"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5d5"
+  },
+  "id": "2",
+  "name": "Obelix",
+  "age": 35,
+  "job": "Lieferant"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5d6"
+  },
+  "id": "3",
+  "name": "Miraculix",
+  "age": 60,
+  "job": "Druide"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5d7"
+  },
+  "id": "4",
+  "name": "Majestix",
+  "age": 60,
+  "job": "Häuptling"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5d8"
+  },
+  "id": "5",
+  "name": "Troubadix",
+  "age": 25,
+  "job": "Barden"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5d9"
+  },
+  "id": "6",
+  "name": "Gutemine",
+  "age": 35,
+  "job": "Häuptlingsfrau"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5da"
+  },
+  "id": "7",
+  "name": "Idefix",
+  "age": 5,
+  "job": "Hund"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5db"
+  },
+  "id": "8",
+  "name": "Geriatrix",
+  "age": 70,
+  "job": "Rentner"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5dc"
+  },
+  "id": "9",
+  "name": "Automatix",
+  "age": 35,
+  "job": "Schmied"
+},
+{
+  "_id": {
+    "$oid": "65cde65b5aa1a2012c74a5dd"
+  },
+  "id": "10",
+  "name": "Grockelix",
+  "age": 35,
+  "job": "Fischer"
+}]
