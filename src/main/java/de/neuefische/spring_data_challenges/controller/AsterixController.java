@@ -1,12 +1,13 @@
 package de.neuefische.spring_data_challenges.controller;
 
+import de.neuefische.spring_data_challenges.model.CharacterRecord;
+import de.neuefische.spring_data_challenges.repository.AsterixRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/asterix")

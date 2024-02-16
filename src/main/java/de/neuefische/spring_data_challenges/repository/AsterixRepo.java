@@ -1,5 +1,6 @@
-package de.neuefische.spring_data_challenges.controller;
+package de.neuefische.spring_data_challenges.repository;
 
+import de.neuefische.spring_data_challenges.model.CharacterRecord;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

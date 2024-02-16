@@ -1,4 +1,4 @@
-package de.neuefische.spring_data_challenges.controller;
+package de.neuefische.spring_data_challenges.model;
 
 public record CharacterRecord(
     String id,
