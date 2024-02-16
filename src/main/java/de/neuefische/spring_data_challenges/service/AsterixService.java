@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +20,12 @@ public class AsterixService {
     public CharacterRecord addAsterix(CharacterRecord character) {
         repository.save(character);
         return repository.findById(character.id()).orElseThrow();
+    }
+
+    // ############################################################
+    // Helper
+    // ############################################################
+    private static String generateUUID() {
+        return UUID.randomUUID().toString();
     }
 }
