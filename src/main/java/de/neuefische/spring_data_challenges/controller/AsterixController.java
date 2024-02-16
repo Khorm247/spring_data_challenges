@@ -1,20 +1,25 @@
 package de.neuefische.spring_data_challenges.controller;
 
 import de.neuefische.spring_data_challenges.model.CharacterRecord;
+import de.neuefische.spring_data_challenges.model.dtos.CharacterDto;
 import de.neuefische.spring_data_challenges.repository.AsterixRepo;
+import de.neuefische.spring_data_challenges.service.AsterixService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Controller
 @RestController
 @RequestMapping("/api/asterix")
 @RequiredArgsConstructor
 public class AsterixController {
 
-    private final AsterixRepo repo;
+    private final AsterixService service;
 
     // ############################################################
     // GET
@@ -28,70 +33,24 @@ public class AsterixController {
             @RequestParam(required = false) String name){
 
         if(useOrLogic){
-            return getCombinedResults(job, Optional.ofNullable(age), name);
+            return service.getCombinedResults(job, Optional.ofNullable(age), name);
         }
 
-        return getFullMatchResults(job, Optional.ofNullable(age), name);
-    }
-
-    private List<CharacterRecord> getFullMatchResults(String job, Optional<Integer> age, String name) {
-        List<CharacterRecord> result = repo.findAll();
-
-        if (job != null) {
-            result = result.stream()
-                    .filter(characterRecord -> characterRecord.job().equals(job))
-                    .toList();
-        }
-
-        if (age.isPresent()) {
-            result = result.stream()
-                    .filter(characterRecord -> characterRecord.age() == age.get())
-                    .toList();
-        }
-
-        if (name != null) {
-            result = result.stream()
-                    .filter(characterRecord -> characterRecord.name().equals(name))
-                    .toList();
-        }
-        return result;
-    }
-
-    private List<CharacterRecord> getCombinedResults(String job, Optional<Integer> age, String name){
-        List<CharacterRecord> fullList = repo.findAll();
-        List<CharacterRecord> result = new ArrayList<>();
-
-        if (job != null) {
-            result.addAll(fullList.stream()
-                    .filter(characterRecord -> characterRecord.job().equals(job))
-                    .toList());
-        }
-
-        if (age.isPresent()) {
-            result.addAll(fullList.stream()
-                    .filter(characterRecord -> characterRecord.age() == age.get())
-                    .toList());
-        }
-
-        if (name != null) {
-            result.addAll(fullList.stream()
-                    .filter(characterRecord -> characterRecord.name().equals(name))
-                    .toList());
-        }
-        return result.stream().distinct().toList();
+        return service.getFullMatchResults(job, Optional.ofNullable(age), name);
     }
 
     @GetMapping("/character/{id}")
     public CharacterRecord getCharacterById(@PathVariable String id) {
-        return repo.findById(id).get();
+        return service.findById(id);
     }
 
     // ############################################################
     // POST
     // ############################################################
     @PostMapping("/addCharacter")
-    public CharacterRecord addCharacter(@RequestBody CharacterRecord characterRecord) {
-        return repo.save(characterRecord);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CharacterRecord addCharacter(@RequestBody CharacterDto characterDto) {
+        return service.save(characterDto);
     }
 
 
@@ -99,20 +58,21 @@ public class AsterixController {
     // PUT
     // ############################################################
     @PutMapping("/updateCharacter/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public CharacterRecord updateCharacter(
             @PathVariable String id,
-            @RequestBody CharacterRecord characterRecord
+            @RequestBody CharacterDto characterDto
     ) {
-        return repo.save(characterRecord);
+        return service.update(characterDto, id);
     }
 
     // ############################################################
     // DELETE
     // ############################################################
     @DeleteMapping("/deleteCharacter/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String deleteCharacter(@PathVariable String id) {
-        String name = repo.findById(id).get().name();
-        repo.deleteById(id);
-        return name + " wurde aus dem Dorf verbannt!";
+        CharacterRecord deleted = service.deleteById(id);
+        return deleted.name() + " wurde aus dem Dorf verbannt!";
     }
 }
